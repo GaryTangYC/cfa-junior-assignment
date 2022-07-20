@@ -1,20 +1,25 @@
+import { useState } from "react";
 import { Box, Image, HStack, Flex, Icon } from "@chakra-ui/react";
-import { getArticles } from "../gateways/articlesAdapter";
-import type { Article } from "../gateways/articles.dto";
-import { useData } from "../hooks/useData";
+// import { getArticles } from "../gateways/articlesAdapter";
+// import type { Article } from "../gateways/articles.dto";
+// import { useData } from "../hooks/useData";
 // import React, { Component } from "react";
 // import ReactDOM from "react-dom";
 // import "react-responsive-carousel/lib/styles/carousel.min.css";
 // import { Carousel } from "react-responsive-carousel";
-import * as React from "react";
-import Carousel from "framer-motion-carousel";
+// import * as React from "react";
+// import Carousel from "framer-motion-carousel";
+
+import { Carousel } from "react-grid-carousel";
 
 import { ReadMoreButton } from "../widgets/ReadMoreButton";
 import { IoCopyOutline } from "react-icons/io5";
 
 export function ContentBox() {
+  const [carouselPage, setCarouselPage] = useState(0);
+
   // dummy data to generate contentBox
-  const data = useData<Article[]>(getArticles);
+  // const data = useData<Article[]>(getArticles);
 
   const dummyContent = [
     {
@@ -94,34 +99,18 @@ export function ContentBox() {
     };
   };
 
-  // type dataArray = {
-  //   id: number;
-  //   imageUrl: string;
-  //   imageAlt: string;
-  //   title: string;
-  //   details: string;
-  //   author: string;
-  //   replies: number;
-  //   date: object;
-  // };
-
-  let sliceData1: dataArray[] = [];
-  let sliceData3: dataArray[] = [];
-
-  // const sliceData = [];
+  let sliceData: any[] = [];
 
   const getCarouselData = () => {
-    for (let i = 0; i < dummyContent.length; i += 3) {
+    for (let i = carouselPage; i < dummyContent.length; i += 3) {
       let temp = dummyContent.slice(i, i + 3);
-      if (i == 0) {
-        sliceData1 = temp;
-      } else {
-        sliceData3 = temp;
-      }
+      console.log("temp", temp);
+      sliceData.push(temp);
       // res.push(temp);
-      console.log(sliceData1);
+      console.log("dummy", dummyContent);
     }
-    console.log(sliceData3);
+    console.log("slice", sliceData);
+
     // return res;
   };
   getCarouselData();
@@ -130,91 +119,85 @@ export function ContentBox() {
     <Box>
       <Flex>
         <HStack spacing="24px">
-          <Carousel loop={true} autoPlay={false} interval={2000}>
-            {sliceData1.map((content) => (
-              <div>
-                <Box
-                  maxW="sm"
-                  borderWidth="1px"
-                  rounded="lg"
-                  overflow="hidden"
-                  key={content.id}
-                >
+          <Carousel showThumbs={false}>
+            {sliceData.map((content) => (
+              <Box
+                maxW="sm"
+                borderWidth="1px"
+                rounded="lg"
+                overflow="hidden"
+                key={content.id}
+              >
+                <Box display="flex" flex-direction="column" position="relative">
+                  {/* DateBox Component */}
+
+                  <Box
+                    alignItems="center"
+                    display="flex"
+                    position="absolute"
+                    bgColor="#2B3533"
+                  >
+                    <Flex flexDirection="column" alignItems="center">
+                      <Box
+                        as="span"
+                        color="white"
+                        fontSize="md"
+                        alignItems="center"
+                      >
+                        <strong>{content[0].date.day}</strong>
+                      </Box>
+                      <Box
+                        as="span"
+                        color="white"
+                        fontSize="sm"
+                        alignItems="center"
+                      >
+                        {content[0].date.month}
+                      </Box>
+                      <Box
+                        as="span"
+                        color="white"
+                        fontSize="sm"
+                        alignItems="center"
+                      >
+                        {content[0].date.year}
+                      </Box>
+                    </Flex>
+                  </Box>
+                  <Image src={content[0].imageUrl} alt={content[0].imageAlt} />
+                </Box>
+                <Box p="4">
+                  <Box
+                    mt="0"
+                    fontWeight="extrabold"
+                    fontSize="sm"
+                    lineHeight="tight"
+                  >
+                    {content[0].title}
+                  </Box>
+
+                  <Box fontSize="xs">{content[0].details}</Box>
+
                   <Box
                     display="flex"
-                    flex-direction="column"
-                    position="relative"
+                    mt="6"
+                    mb="6"
+                    alignItems="center"
+                    justifyContent="space-between"
                   >
-                    {/* DateBox Component */}
-
-                    <Box
-                      alignItems="center"
-                      display="flex"
-                      position="absolute"
-                      bgColor="#2B3533"
-                    >
-                      <Flex flexDirection="column" alignItems="center">
-                        <Box
-                          as="span"
-                          color="white"
-                          fontSize="md"
-                          alignItems="center"
-                        >
-                          <strong>{content.date.day}</strong>
-                        </Box>
-                        <Box
-                          as="span"
-                          color="white"
-                          fontSize="sm"
-                          alignItems="center"
-                        >
-                          {content.date.month}
-                        </Box>
-                        <Box
-                          as="span"
-                          color="white"
-                          fontSize="sm"
-                          alignItems="center"
-                        >
-                          {content.date.year}
-                        </Box>
-                      </Flex>
-                    </Box>
-                    <Image src={content.imageUrl} alt={content.imageAlt} />
-                  </Box>
-                  <Box p="4">
-                    <Box
-                      mt="0"
-                      fontWeight="extrabold"
-                      fontSize="sm"
-                      lineHeight="tight"
-                    >
-                      {content.title}
-                    </Box>
-
-                    <Box fontSize="xs">{content.details}</Box>
-
-                    <Box
-                      display="flex"
-                      mt="6"
-                      mb="6"
-                      alignItems="center"
-                      justifyContent="space-between"
-                    >
-                      <ReadMoreButton></ReadMoreButton>
-                      <Box>
-                        <Box as="span" ml="2" color="gray.600" fontSize="xs">
-                          {content.author}
-                        </Box>
-                        <Box as="span" ml="2" color="gray.600" fontSize="xs">
-                          <Icon as={IoCopyOutline} />
-                          {content.replies}
-                        </Box>
+                    <ReadMoreButton></ReadMoreButton>
+                    <Box>
+                      <Box as="span" ml="2" color="gray.600" fontSize="xs">
+                        {content[0].author}
+                      </Box>
+                      <Box as="span" ml="2" color="gray.600" fontSize="xs">
+                        <Icon as={IoCopyOutline} />
+                        {content[0].replies}
                       </Box>
                     </Box>
                   </Box>
                 </Box>
-              </div>
+              </Box>
             ))}
           </Carousel>
         </HStack>
