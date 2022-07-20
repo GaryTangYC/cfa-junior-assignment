@@ -3,6 +3,18 @@
 }
 
 .react-multi-carousel-list {
-  max-width: 100%;
-  width: 100%;
+  text-align: center;
+}
+
+.react-multi-carousel-dot-list {
+  display: inline-block;
+}
+
+.custom-dot-list-style {
+  color: #ea2c70;
+  background-color: #ea2c70;
+}
+
+.react-multi-carousel-dot--active button {
+  background: #ea2c70 !important;
 }
