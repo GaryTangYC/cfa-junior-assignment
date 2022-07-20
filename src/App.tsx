@@ -8,7 +8,6 @@ import { Section } from "./components/Section";
 
 function App() {
   const data = useData<Article[]>(getArticles);
-  console.log(data);
   return (
     <>
       <Container>

@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { Box, Image, HStack, Flex, Icon } from "@chakra-ui/react";
+import { Box, Image, HStack, Flex, Icon, Container } from "@chakra-ui/react";
+import "./styles.css";
 // import { getArticles } from "../gateways/articlesAdapter";
 // import type { Article } from "../gateways/articles.dto";
 // import { useData } from "../hooks/useData";
@@ -10,7 +11,9 @@ import { Box, Image, HStack, Flex, Icon } from "@chakra-ui/react";
 // import * as React from "react";
 // import Carousel from "framer-motion-carousel";
 
-import { Carousel } from "react-grid-carousel";
+// import Carousel from "react-grid-carousel";
+import Carousel from "react-multi-carousel";
+import "react-multi-carousel/lib/styles.css";
 
 import { ReadMoreButton } from "../widgets/ReadMoreButton";
 import { IoCopyOutline } from "react-icons/io5";
@@ -18,6 +21,23 @@ import { IoCopyOutline } from "react-icons/io5";
 export function ContentBox() {
   const [carouselPage, setCarouselPage] = useState(0);
 
+  const responsive = {
+    desktop: {
+      breakpoint: { max: 3000, min: 1024 },
+      items: 3,
+      slidesToSlide: 3, // optional, default to 1.
+    },
+    tablet: {
+      breakpoint: { max: 1024, min: 464 },
+      items: 3,
+      slidesToSlide: 3, // optional, default to 1.
+    },
+    mobile: {
+      breakpoint: { max: 464, min: 0 },
+      items: 3,
+      slidesToSlide: 3, // optional, default to 1.
+    },
+  };
   // dummy data to generate contentBox
   // const data = useData<Article[]>(getArticles);
 
@@ -82,6 +102,18 @@ export function ContentBox() {
       replies: 3,
       date: { day: "29", month: "Oct", year: "2020" },
     },
+    {
+      id: 6,
+      imageUrl:
+        "https://images.pexels.com/photos/5915295/pexels-photo-5915295.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+      imageAlt: "Woman Looking Into A Business Paper",
+      title: "Finance And Legal Working Streams Occur Throughout",
+      details:
+        "Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.",
+      author: "ADMIN",
+      replies: 3,
+      date: { day: "29", month: "Oct", year: "2020" },
+    },
   ];
 
   type dataArray = {
@@ -101,107 +133,102 @@ export function ContentBox() {
 
   let sliceData: any[] = [];
 
-  const getCarouselData = () => {
-    for (let i = carouselPage; i < dummyContent.length; i += 3) {
-      let temp = dummyContent.slice(i, i + 3);
-      console.log("temp", temp);
-      sliceData.push(temp);
-      // res.push(temp);
-      console.log("dummy", dummyContent);
-    }
-    console.log("slice", sliceData);
+  // const getCarouselData = () => {
+  //   for (let i = carouselPage; i < dummyContent.length; i += 3) {
+  //     let temp = dummyContent.slice(i, i + 3);
+  //     console.log("temp", temp);
+  //     sliceData.push(temp);
+  //     // res.push(temp);
+  //     console.log("dummy", dummyContent);
+  //   }
+  //   console.log("slice", sliceData);
 
-    // return res;
-  };
-  getCarouselData();
+  //   // return res;
+  // };
+  // getCarouselData();
 
   return (
     <Box>
-      <Flex>
-        <HStack spacing="24px">
-          <Carousel showThumbs={false}>
-            {sliceData.map((content) => (
-              <Box
-                maxW="sm"
-                borderWidth="1px"
-                rounded="lg"
-                overflow="hidden"
-                key={content.id}
-              >
-                <Box display="flex" flex-direction="column" position="relative">
-                  {/* DateBox Component */}
-
-                  <Box
-                    alignItems="center"
-                    display="flex"
-                    position="absolute"
-                    bgColor="#2B3533"
-                  >
-                    <Flex flexDirection="column" alignItems="center">
-                      <Box
-                        as="span"
-                        color="white"
-                        fontSize="md"
-                        alignItems="center"
-                      >
-                        <strong>{content[0].date.day}</strong>
-                      </Box>
-                      <Box
-                        as="span"
-                        color="white"
-                        fontSize="sm"
-                        alignItems="center"
-                      >
-                        {content[0].date.month}
-                      </Box>
-                      <Box
-                        as="span"
-                        color="white"
-                        fontSize="sm"
-                        alignItems="center"
-                      >
-                        {content[0].date.year}
-                      </Box>
-                    </Flex>
-                  </Box>
-                  <Image src={content[0].imageUrl} alt={content[0].imageAlt} />
+      {/* <Flex>
+        <HStack spacing="24px"> */}
+      <Carousel responsive={responsive} showDots={true}>
+        {dummyContent.map((content) => (
+          <div key={content.id}>
+            <Box maxW="md" borderWidth="1px" rounded="lg" overflow="hidden">
+              <Box display="flex" flex-direction="column" position="relative">
+                {/* DateBox Component */}
+                <Box
+                  alignItems="center"
+                  display="flex"
+                  position="absolute"
+                  bgColor="#2B3533"
+                >
+                  <Flex flexDirection="column" alignItems="center">
+                    <Box
+                      as="span"
+                      color="white"
+                      fontSize="md"
+                      alignItems="center"
+                    >
+                      <strong>{content.date.day}</strong>
+                    </Box>
+                    <Box
+                      as="span"
+                      color="white"
+                      fontSize="sm"
+                      alignItems="center"
+                    >
+                      {content.date.month}
+                    </Box>
+                    <Box
+                      as="span"
+                      color="white"
+                      fontSize="sm"
+                      alignItems="center"
+                    >
+                      {content.date.year}
+                    </Box>
+                  </Flex>
                 </Box>
-                <Box p="4">
-                  <Box
-                    mt="0"
-                    fontWeight="extrabold"
-                    fontSize="sm"
-                    lineHeight="tight"
-                  >
-                    {content[0].title}
-                  </Box>
+                <Image src={content.imageUrl} alt={content.imageAlt} />
+              </Box>
+              <Box p="4">
+                <Box
+                  mt="0"
+                  fontWeight="extrabold"
+                  fontSize="sm"
+                  lineHeight="tight"
+                >
+                  {content.title}
+                </Box>
 
-                  <Box fontSize="xs">{content[0].details}</Box>
+                <Box fontSize="xs">{content.details}</Box>
 
-                  <Box
-                    display="flex"
-                    mt="6"
-                    mb="6"
-                    alignItems="center"
-                    justifyContent="space-between"
-                  >
-                    <ReadMoreButton></ReadMoreButton>
-                    <Box>
-                      <Box as="span" ml="2" color="gray.600" fontSize="xs">
-                        {content[0].author}
-                      </Box>
-                      <Box as="span" ml="2" color="gray.600" fontSize="xs">
-                        <Icon as={IoCopyOutline} />
-                        {content[0].replies}
-                      </Box>
+                <Box
+                  display="flex"
+                  mt="6"
+                  mb="6"
+                  alignItems="center"
+                  justifyContent="space-between"
+                >
+                  <ReadMoreButton></ReadMoreButton>
+                  <Box>
+                    <Box as="span" ml="2" color="gray.600" fontSize="xs">
+                      {content.author}
+                    </Box>
+                    <Box as="span" ml="2" color="gray.600" fontSize="xs">
+                      <Icon as={IoCopyOutline} />
+                      {content.replies}
                     </Box>
                   </Box>
                 </Box>
               </Box>
-            ))}
-          </Carousel>
-        </HStack>
-      </Flex>
+            </Box>
+          </div>
+        ))}
+      </Carousel>
+      {/* </HStack>
+      </Flex> */}
     </Box>
   );
 }
