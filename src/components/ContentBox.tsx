@@ -1,19 +1,21 @@
-import {
-  Box,
-  Image,
-  HStack,
-  Container,
-  Grid,
-  Flex,
-  forwardRef,
-  Icon,
-} from "@chakra-ui/react";
+import { Box, Image, HStack, Flex, Icon } from "@chakra-ui/react";
+import { getArticles } from "../gateways/articlesAdapter";
+import type { Article } from "../gateways/articles.dto";
+import { useData } from "../hooks/useData";
+// import React, { Component } from "react";
+// import ReactDOM from "react-dom";
+// import "react-responsive-carousel/lib/styles/carousel.min.css";
+// import { Carousel } from "react-responsive-carousel";
+import * as React from "react";
+import Carousel from "framer-motion-carousel";
 
 import { ReadMoreButton } from "../widgets/ReadMoreButton";
 import { IoCopyOutline } from "react-icons/io5";
 
 export function ContentBox() {
   // dummy data to generate contentBox
+  const data = useData<Article[]>(getArticles);
+
   const dummyContent = [
     {
       id: 1,
@@ -77,93 +79,144 @@ export function ContentBox() {
     },
   ];
 
+  type dataArray = {
+    id: number;
+    imageUrl: string;
+    imageAlt: string;
+    title: string;
+    details: string;
+    author: string;
+    replies: number;
+    date: {
+      day: string;
+      month: string;
+      year: string;
+    };
+  };
+
+  // type dataArray = {
+  //   id: number;
+  //   imageUrl: string;
+  //   imageAlt: string;
+  //   title: string;
+  //   details: string;
+  //   author: string;
+  //   replies: number;
+  //   date: object;
+  // };
+
+  let sliceData1: dataArray[] = [];
+  let sliceData3: dataArray[] = [];
+
+  // const sliceData = [];
+
   const getCarouselData = () => {
-    const res = [];
     for (let i = 0; i < dummyContent.length; i += 3) {
-      const temp = dummyContent.slice(i, i + 3);
+      let temp = dummyContent.slice(i, i + 3);
+      if (i == 0) {
+        sliceData1 = temp;
+      } else {
+        sliceData3 = temp;
+      }
       // res.push(temp);
+      console.log(sliceData1);
     }
+    console.log(sliceData3);
     // return res;
   };
+  getCarouselData();
 
   return (
     <Box>
       <Flex>
         <HStack spacing="24px">
-          {dummyContent.map((content) => (
-            <Box
-              maxW="sm"
-              borderWidth="1px"
-              rounded="lg"
-              overflow="hidden"
-              key={content.id}
-            >
-              <Box display="flex" flex-direction="column" position="relative">
-                {/* DateBox Component */}
-
+          <Carousel loop={true} autoPlay={false} interval={2000}>
+            {sliceData1.map((content) => (
+              <div>
                 <Box
-                  alignItems="center"
-                  display="flex"
-                  position="absolute"
-                  bgColor="#2B3533"
+                  maxW="sm"
+                  borderWidth="1px"
+                  rounded="lg"
+                  overflow="hidden"
+                  key={content.id}
                 >
-                  <Flex flexDirection="column" alignItems="center">
-                    <Box
-                      as="span"
-                      color="white"
-                      fontSize="md"
-                      alignItems="center"
-                    >
-                      <strong>{content.date.day}</strong>
-                    </Box>
-                    <Box
-                      as="span"
-                      color="white"
-                      fontSize="sm"
-                      alignItems="center"
-                    >
-                      {content.date.month}
-                    </Box>
-                    <Box
-                      as="span"
-                      color="white"
-                      fontSize="sm"
-                      alignItems="center"
-                    >
-                      {content.date.year}
-                    </Box>
-                  </Flex>
-                </Box>
-                <Image src={content.imageUrl} alt={content.imageAlt} />
-              </Box>
-              <Box p="4">
-                <Box mt="0" fontWeight="extrabold" lineHeight="tight">
-                  {content.title}
-                </Box>
+                  <Box
+                    display="flex"
+                    flex-direction="column"
+                    position="relative"
+                  >
+                    {/* DateBox Component */}
 
-                <Box>{content.details}</Box>
-
-                <Box
-                  display="flex"
-                  mt="6"
-                  mb="6"
-                  alignItems="center"
-                  justifyContent="space-between"
-                >
-                  <ReadMoreButton></ReadMoreButton>
-                  <Box>
-                    <Box as="span" ml="2" color="gray.600" fontSize="sm">
-                      {content.author}
+                    <Box
+                      alignItems="center"
+                      display="flex"
+                      position="absolute"
+                      bgColor="#2B3533"
+                    >
+                      <Flex flexDirection="column" alignItems="center">
+                        <Box
+                          as="span"
+                          color="white"
+                          fontSize="md"
+                          alignItems="center"
+                        >
+                          <strong>{content.date.day}</strong>
+                        </Box>
+                        <Box
+                          as="span"
+                          color="white"
+                          fontSize="sm"
+                          alignItems="center"
+                        >
+                          {content.date.month}
+                        </Box>
+                        <Box
+                          as="span"
+                          color="white"
+                          fontSize="sm"
+                          alignItems="center"
+                        >
+                          {content.date.year}
+                        </Box>
+                      </Flex>
                     </Box>
-                    <Box as="span" ml="2" color="gray.600" fontSize="sm">
-                      <Icon as={IoCopyOutline} />
-                      {content.replies}
+                    <Image src={content.imageUrl} alt={content.imageAlt} />
+                  </Box>
+                  <Box p="4">
+                    <Box
+                      mt="0"
+                      fontWeight="extrabold"
+                      fontSize="sm"
+                      lineHeight="tight"
+                    >
+                      {content.title}
+                    </Box>
+
+                    <Box fontSize="xs">{content.details}</Box>
+
+                    <Box
+                      display="flex"
+                      mt="6"
+                      mb="6"
+                      alignItems="center"
+                      justifyContent="space-between"
+                    >
+                      <ReadMoreButton></ReadMoreButton>
+                      <Box>
+                        <Box as="span" ml="2" color="gray.600" fontSize="xs">
+                          {content.author}
+                        </Box>
+                        <Box as="span" ml="2" color="gray.600" fontSize="xs">
+                          <Icon as={IoCopyOutline} />
+                          {content.replies}
+                        </Box>
+                      </Box>
                     </Box>
                   </Box>
                 </Box>
-              </Box>
-            </Box>
-          ))}
+              </div>
+            ))}
+          </Carousel>
         </HStack>
       </Flex>
     </Box>

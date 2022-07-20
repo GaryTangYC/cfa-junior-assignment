@@ -3,7 +3,7 @@ import { ArrowForwardIcon } from "@chakra-ui/icons";
 
 export function ReadMoreButton() {
   return (
-    <Button colorScheme="pink" variant="solid">
+    <Button colorScheme="pink" variant="solid" size="sm">
       Read More
       <ArrowForwardIcon></ArrowForwardIcon>
     </Button>
