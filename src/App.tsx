@@ -5,6 +5,7 @@ import { useData } from "./hooks/useData";
 import { Center, Container, Heading, Image, Text } from "@chakra-ui/react";
 import { CodePanel } from "./components/Code";
 import { Section } from "./components/Section";
+import { Task2 } from "./components/task2/Task2";
 
 function App() {
   const data = useData<Article[]>(getArticles);
@@ -18,8 +19,9 @@ function App() {
       <Carousel />
       <Section>
         <Heading>Data</Heading>
+
         {data ? (
-          <CodePanel>{JSON.stringify(data, null, 2)}</CodePanel>
+          <Task2></Task2>
         ) : (
           <Text>This should be null if you're on task 1!</Text>
         )}
