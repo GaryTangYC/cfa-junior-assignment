@@ -1,13 +1,5 @@
 import { useEffect, useState } from "react";
-import {
-  Box,
-  Image,
-  HStack,
-  Flex,
-  Icon,
-  Container,
-  Text,
-} from "@chakra-ui/react";
+import { Box, Image, Flex, Icon, Spinner } from "@chakra-ui/react";
 import "./styles.css";
 
 import { ReadMoreButton } from "../../widgets/ReadMoreButton";
@@ -34,51 +26,45 @@ export function ContentBox2() {
 
   const [page, setPage] = useState<number>(1);
   const [limit, setLimit] = useState<number>(18);
-
-  // async function getNewData(page, limit): Promise<Article[]> {
-  //   const response = await fetch(
-  //     `http://localhost:3001/posts?_page=${page}&_limit=${limit}`
-  //   );
-  //   return response.json();
-  // }
-
-  //** IF FUNCTION REACHED 2nd last tab: run getData function to load carouselData once more
+  const [waitLoading, setWaitLoading] = useState<boolean>(false);
 
   const refreshData = async () => {
+    setWaitLoading(true);
     let updateLimit = limit + 18;
     console.log("limit", limit);
     setLimit(updateLimit);
+    console.log("limitafter", limit);
     let testData = await getArticles(page, limit);
     console.log("testdata", testData);
     setCarouselData(testData);
+    setWaitLoading(false);
   };
 
   useEffect(() => {
     let testData;
     async function getData() {
-      setLimit(18);
       testData = await getArticles(page, limit);
       console.log("testdata", testData);
       setCarouselData(testData);
     }
     getData();
-  }, []);
+  }, [limit]);
 
   const responsive = {
     desktop: {
       breakpoint: { max: 4000, min: 1025 },
-      items: 3,
-      slidesToSlide: 3, // optional, default to 1.
+      items: 3, // set number of contentBox in view
+      slidesToSlide: 3, // Set number of slides that move per click
     },
     tablet: {
       breakpoint: { max: 1024, min: 464 },
       items: 3,
-      slidesToSlide: 3, // optional, default to 1.
+      slidesToSlide: 3,
     },
     mobile: {
       breakpoint: { max: 464, min: 0 },
       items: 1,
-      slidesToSlide: 1, // optional, default to 1.
+      slidesToSlide: 1,
     },
   };
 
@@ -90,6 +76,19 @@ export function ContentBox2() {
     return <button onClick={() => onClick?.()} />;
   };
 
+  if (waitLoading) {
+    return (
+      <Box borderRadius="lg" mb="5">
+        <Spinner
+          thickness="4px"
+          speed="0.65s"
+          emptyColor="gray.200"
+          color="blue.500"
+          size="xl"
+        ></Spinner>
+      </Box>
+    );
+  }
   return (
     <Box borderRadius="lg" mb="5">
       {/* <Flex>
@@ -98,12 +97,16 @@ export function ContentBox2() {
         responsive={responsive}
         showDots={true}
         draggable={true}
-        // customLeftArrow={<CustomLeftArrow />}
-        // customRightArrow={<CustomRightArrow />}
         afterChange={(previousSlide, { currentSlide }) => {
           console.log("currentslide", currentSlide);
           let current = (currentSlide += 3);
-          if (currentSlide !== 0 && current % 18 === 0) {
+          console.log("current", current);
+          console.log("limit", limit);
+          if (
+            (currentSlide !== 0 && current === limit - 3) ||
+            currentSlide === limit
+          ) {
+            console.log("this runs");
             refreshData();
           }
         }}
