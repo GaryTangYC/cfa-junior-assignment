@@ -23,7 +23,10 @@ import { IoCopyOutline } from "react-icons/io5";
 export function ContentBox2() {
   let data = useData<Article[]>(getArticles);
 
-  const [carouselPage, setCarouselPage] = useState();
+  const [carouselData, setCarouselData] = useState<any[] | null>(null);
+
+  const [page, setPage] = useState<number>(1);
+  const [limit, setLimit] = useState<number>(20);
   // let page = 2;
   // let limit = 20;
 
@@ -35,14 +38,14 @@ export function ContentBox2() {
   // }
 
   useEffect(() => {
+    let testData;
     async function getData() {
-      let page = 2;
-      let limit = 3;
-      const testData = await getArticles(page, limit);
+      testData = await getArticles(page, limit);
       console.log("testdata", testData);
+      setCarouselData(testData);
     }
     getData();
-  }, [setCarouselPage]);
+  }, []);
 
   const responsive = {
     desktop: {
@@ -78,27 +81,25 @@ export function ContentBox2() {
 
   //   // return res;
   // };
-  // getCarouselData();
 
   return (
     <Box borderRadius="lg" mb="5">
       {/* <Flex>
         <HStack spacing="24px"> */}
       <Carousel responsive={responsive} showDots={true} draggable={true}>
-        {data ? (
-          data.map((content) => (
+        {carouselData ? (
+          carouselData.map((content) => (
             <Box>
               <Box
                 maxW="sm"
                 borderWidth="1px"
                 overflow="hidden"
-                key={content.postTitle}
+                key={content.id}
                 alignItems="center"
                 display="inline-block"
                 mb="5"
               >
                 <Box display="flex" flex-direction="column" position="relative">
-                  {/* DateBox Component */}
                   <Box
                     alignItems="center"
                     display="flex"
@@ -115,24 +116,6 @@ export function ContentBox2() {
                       >
                         <strong>{content.createdAt}</strong>
                       </Box>
-                      {/* <Box
-                      as="span"
-                      color="white"
-                      fontSize="md"
-                      alignItems="center"
-                    >
-                      {content.date.month}
-                    </Box>
-                    <Box
-                      as="span"
-                      color="white"
-                      fontSize="md"
-                      alignItems="center"
-                      margin="1"
-                      mb="3"
-                    >
-                      {content.date.year}
-                    </Box> */}
                     </Flex>
                   </Box>
                   <Image src={content.postImgSrc} />
@@ -180,7 +163,6 @@ export function ContentBox2() {
                       </Box>
                       <Box as="span" ml="2" color="grey" fontSize="md">
                         <Icon as={IoCopyOutline} />
-                        {/* {content.replies} */}
                       </Box>
                     </Box>
                   </Box>
@@ -192,8 +174,6 @@ export function ContentBox2() {
           <div></div>
         )}
       </Carousel>
-      {/* </HStack>
-      </Flex> */}
     </Box>
   );
 }
