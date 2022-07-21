@@ -10,25 +10,30 @@ import {
 } from "@chakra-ui/react";
 import "./styles.css";
 
+import { ReadMoreButton } from "../../widgets/ReadMoreButton";
+import { IoCopyOutline } from "react-icons/io5";
+
 import { Article } from "../../gateways/articles.dto";
 import { getArticles } from "../../gateways/articlesAdapter";
 import { useData } from "../../hooks/useData";
 
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
-
-import { ReadMoreButton } from "../../widgets/ReadMoreButton";
-import { IoCopyOutline } from "react-icons/io5";
+import { ArrowProps } from "react-multi-carousel/lib/types";
+interface CustomLeftArrowProps extends ArrowProps {
+  // myOwnStuff: string;
+  onClick?: () => void;
+}
+interface CustomRightArrowProps extends ArrowProps {
+  // myOwnStuff: string;
+  // onClick: () => void;
+}
 
 export function ContentBox2() {
-  let data = useData<Article[]>(getArticles);
-
   const [carouselData, setCarouselData] = useState<any[] | null>(null);
 
   const [page, setPage] = useState<number>(1);
-  const [limit, setLimit] = useState<number>(20);
-  // let page = 2;
-  // let limit = 20;
+  const [limit, setLimit] = useState<number>(18);
 
   // async function getNewData(page, limit): Promise<Article[]> {
   //   const response = await fetch(
@@ -37,9 +42,21 @@ export function ContentBox2() {
   //   return response.json();
   // }
 
+  //** IF FUNCTION REACHED 2nd last tab: run getData function to load carouselData once more
+
+  const refreshData = async () => {
+    let updateLimit = limit + 18;
+    console.log("limit", limit);
+    setLimit(updateLimit);
+    let testData = await getArticles(page, limit);
+    console.log("testdata", testData);
+    setCarouselData(testData);
+  };
+
   useEffect(() => {
     let testData;
     async function getData() {
+      setLimit(18);
       testData = await getArticles(page, limit);
       console.log("testdata", testData);
       setCarouselData(testData);
@@ -64,29 +81,33 @@ export function ContentBox2() {
       slidesToSlide: 1, // optional, default to 1.
     },
   };
-  // dummy data to generate contentBox
-  // const data = useData<Article[]>(getArticles);
 
-  const dummyContent = data;
+  const CustomLeftArrow = ({ onClick }: CustomLeftArrowProps) => {
+    return <button onClick={() => onClick?.()} />;
+  };
 
-  // const getCarouselData = () => {
-  //   for (let i = carouselPage; i < dummyContent.length; i += 3) {
-  //     let temp = dummyContent.slice(i, i + 3);
-  //     console.log("temp", temp);
-  //     sliceData.push(temp);
-  //     // res.push(temp);
-  //     console.log("dummy", dummyContent);
-  //   }
-  //   console.log("slice", sliceData);
-
-  //   // return res;
-  // };
+  const CustomRightArrow = ({ onClick }: CustomRightArrowProps) => {
+    return <button onClick={() => onClick?.()} />;
+  };
 
   return (
     <Box borderRadius="lg" mb="5">
       {/* <Flex>
         <HStack spacing="24px"> */}
-      <Carousel responsive={responsive} showDots={true} draggable={true}>
+      <Carousel
+        responsive={responsive}
+        showDots={true}
+        draggable={true}
+        // customLeftArrow={<CustomLeftArrow />}
+        // customRightArrow={<CustomRightArrow />}
+        afterChange={(previousSlide, { currentSlide }) => {
+          console.log("currentslide", currentSlide);
+          let current = (currentSlide += 3);
+          if (currentSlide !== 0 && current % 18 === 0) {
+            refreshData();
+          }
+        }}
+      >
         {carouselData ? (
           carouselData.map((content) => (
             <Box>
