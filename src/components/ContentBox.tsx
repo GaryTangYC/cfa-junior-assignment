@@ -159,86 +159,95 @@ export function ContentBox() {
     <Box borderRadius="lg" mb="5">
       {/* <Flex>
         <HStack spacing="24px"> */}
-      <Carousel responsive={responsive} showDots={true}>
+      <Carousel responsive={responsive} showDots={true} draggable={true}>
         {dummyContent.map((content) => (
-          <Box
-            maxW="md"
-            borderWidth="1px"
-            overflow="hidden"
-            key={content.id}
-            alignItems="center"
-            display="inline-block"
-          >
-            <Box display="flex" flex-direction="column" position="relative">
-              {/* DateBox Component */}
-              <Box
-                alignItems="center"
-                display="flex"
-                position="absolute"
-                bgColor="#2B3533"
-              >
-                <Flex flexDirection="column" alignItems="center">
-                  <Box
-                    as="span"
-                    color="white"
-                    fontSize="xl"
-                    alignItems="center"
-                    margin="2"
-                  >
-                    <strong>{content.date.day}</strong>
-                  </Box>
-                  <Box
-                    as="span"
-                    color="white"
-                    fontSize="md"
-                    alignItems="center"
-                  >
-                    {content.date.month}
-                  </Box>
-                  <Box
-                    as="span"
-                    color="white"
-                    fontSize="md"
-                    alignItems="center"
-                    margin="1"
-                    mb="3"
-                  >
-                    {content.date.year}
-                  </Box>
-                </Flex>
+          <Box>
+            <Box
+              maxW="sm"
+              borderWidth="1px"
+              overflow="hidden"
+              key={content.id}
+              alignItems="center"
+              display="inline-block"
+              mb="5"
+            >
+              <Box display="flex" flex-direction="column" position="relative">
+                {/* DateBox Component */}
+                <Box
+                  alignItems="center"
+                  display="flex"
+                  position="absolute"
+                  bgColor="#2B3533"
+                >
+                  <Flex flexDirection="column" alignItems="center">
+                    <Box
+                      as="span"
+                      color="white"
+                      fontSize="xl"
+                      alignItems="center"
+                      margin="2"
+                    >
+                      <strong>{content.date.day}</strong>
+                    </Box>
+                    <Box
+                      as="span"
+                      color="white"
+                      fontSize="md"
+                      alignItems="center"
+                    >
+                      {content.date.month}
+                    </Box>
+                    <Box
+                      as="span"
+                      color="white"
+                      fontSize="md"
+                      alignItems="center"
+                      margin="1"
+                      mb="3"
+                    >
+                      {content.date.year}
+                    </Box>
+                  </Flex>
+                </Box>
+                <Image src={content.imageUrl} alt={content.imageAlt} />
               </Box>
-              <Image src={content.imageUrl} alt={content.imageAlt} />
-            </Box>
-            <Box p="4" bg="#FFFFFF">
-              <Box
-                mt="0"
-                mb="4"
-                fontWeight="extrabold"
-                fontSize="xl"
-                lineHeight="tight"
-              >
-                {content.title}
-              </Box>
+              <Box bg="#FFFFFF" display="inline-block" p="5">
+                <Box
+                  mt="0"
+                  mb="4"
+                  fontWeight="extrabold"
+                  fontSize="xl"
+                  lineHeight="tight"
+                  textAlign={["left"]}
+                >
+                  {content.title}
+                </Box>
 
-              <Box fontSize="lg" textAlign={["center"]}>
-                {content.details}
-              </Box>
+                <Box
+                  fontSize="lg"
+                  textAlign={["left"]}
+                  display="inline-block"
+                  color="grey"
+                >
+                  {content.details}
+                </Box>
 
-              <Box
-                display="flex"
-                mt="6"
-                mb="6"
-                justifyContent="space-between"
-                alignItems="baseline"
-              >
-                <ReadMoreButton></ReadMoreButton>
-                <Box>
-                  <Box as="span" ml="2" color="gray.600" fontSize="md">
-                    {content.author}
-                  </Box>
-                  <Box as="text" ml="2" color="gray.600" fontSize="md">
-                    <Icon as={IoCopyOutline} />
-                    {content.replies}
+                <Box
+                  display="flex"
+                  mt="6"
+                  mb="3"
+                  justifyContent="space-between"
+                  alignItems="baseline"
+                >
+                  <ReadMoreButton></ReadMoreButton>
+                  <Box>
+                    <Box as="span" ml="2" color="grey" fontSize="md">
+                      {content.author}
+                    </Box>
+                    <Box as="span" ml="2" color="grey" fontSize="md">
+                      <Icon as={IoCopyOutline} />
+                      {content.replies}
+                    </Box>
                   </Box>
                 </Box>
               </Box>

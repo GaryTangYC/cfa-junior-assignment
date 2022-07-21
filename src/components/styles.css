@@ -4,6 +4,7 @@
 
 .react-multi-carousel-list {
   text-align: center;
+  /* position: unset !important; */
 }
 
 .react-multi-carousel-dot-list {
@@ -17,4 +18,12 @@
 
 .react-multi-carousel-dot--active button {
   background: #ea2c70 !important;
+}
+
+.react-multiple-carousel__arrow--right {
+  right: calc(1px) !important;
+}
+
+.react-multiple-carousel__arrow--left {
+  left: calc(1px) !important;
 }
