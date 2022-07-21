@@ -122,6 +122,54 @@ export function ContentBox() {
       replies: 3,
       date: { day: "29", month: "Oct", year: "2020" },
     },
+    // {
+    //   id: 7,
+    //   imageUrl:
+    //     "https://images.pexels.com/photos/5915295/pexels-photo-5915295.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+    //   imageAlt: "Woman Looking Into A Business Paper",
+    //   title: "Finance And Legal Working Streams Occur Throughout",
+    //   details:
+    //     "Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.",
+    //   author: "ADMIN",
+    //   replies: 3,
+    //   date: { day: "29", month: "Oct", year: "2020" },
+    // },
+    // {
+    //   id: 8,
+    //   imageUrl:
+    //     "https://images.pexels.com/photos/3184296/pexels-photo-3184296.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+    //   imageAlt: "Women Standing beside Corkboard",
+    //   title: "Finance And Legal Working Streams Occur Throughout",
+    //   details:
+    //     "Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.",
+    //   author: "ADMIN",
+    //   replies: 3,
+    //   date: { day: "29", month: "Oct", year: "2020" },
+    // },
+    // {
+    //   id: 9,
+    //   imageUrl:
+    //     "https://images.pexels.com/photos/5915295/pexels-photo-5915295.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+    //   imageAlt: "Woman Looking Into A Business Paper",
+    //   title: "Finance And Legal Working Streams Occur Throughout",
+    //   details:
+    //     "Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.",
+    //   author: "ADMIN",
+    //   replies: 3,
+    //   date: { day: "29", month: "Oct", year: "2020" },
+    // },
+    // {
+    //   id: 10,
+    //   imageUrl:
+    //     "https://images.pexels.com/photos/1181622/pexels-photo-1181622.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+    //   imageAlt: "Women Colleagues gathered inside Conference Room",
+    //   title: "Finance And Legal Working Streams Occur Throughout",
+    //   details:
+    //     "Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.",
+    //   author: "ADMIN",
+    //   replies: 3,
+    //   date: { day: "29", month: "Oct", year: "2020" },
+    // },
   ];
 
   type dataArray = {
